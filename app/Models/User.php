@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection<int, WooCommerceCredential> $woocommerceCredentials
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -44,5 +47,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    
+    /**
+     * Get the WooCommerce credentials for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<WooCommerceCredential>
+     */
+    public function woocommerceCredentials()
+    {
+        return $this->hasMany(WooCommerceCredential::class);
     }
 }

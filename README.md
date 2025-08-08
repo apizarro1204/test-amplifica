@@ -1,61 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Amplifica WooCommerce Integration
 
-## About Laravel
+Plataforma de gestión y reportería para tiendas WooCommerce, desarrollada en Laravel.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Características principales
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Autenticación de usuarios (registro/login)
+- Conexión de múltiples tiendas WooCommerce por usuario
+- Visualización de productos (nombre, SKU, precio, imagen)
+- Visualización de pedidos recientes (cliente, fecha, productos, estado)
+- Exportación de productos y pedidos a Excel
+- Dashboard con métricas agregadas (ventas por mes, productos más vendidos)
+- Filtros avanzados en pedidos
+- Logs de errores
+- Sincronización manual de datos (comando artisan)
+- Panel para administrar múltiples tiendas
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Instalación
 
-## Learning Laravel
+1. Clona el repositorio:
+	```bash
+	git clone https://github.com/apizarro1204/test-amplifica.git
+	cd test-amplifica
+	```
+2. Instala dependencias:
+	```bash
+	composer install
+	npm install && npm run build
+	```
+3. Copia el archivo de entorno y configura tus variables:
+	```bash
+	cp .env.example .env
+	php artisan key:generate
+	```
+4. Configura la base de datos en `.env` y ejecuta migraciones:
+	```bash
+	php artisan migrate
+	```
+5. (Opcional) Ejecuta los tests:
+	```bash
+	php artisan test
+	```
+6. Inicia el servidor:
+	```bash
+	php artisan serve
+	```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Uso
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Regístrate o inicia sesión.
+2. En el menú de usuario podrás agregar una nueva tienda WooCommerce en el link "Agregar nueva tienda".
+	- Debes ingresar la URL de la tienda y las API Keys (Consumer Key y Consumer Secret) generadas desde WooCommerce.
+	- Por el momento, **solo se soporta WooCommerce**.
+3. Una vez conectada la tienda, podrás:
+	- Ver productos y pedidos en tiempo real (API en vivo)
+	- Exportar productos y pedidos a Excel
+	- Visualizar métricas y reportería en el dashboard
+	- Filtrar pedidos por fecha, cliente o estado
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Sincronización y almacenamiento local
 
-## Laravel Sponsors
+El sistema permite sincronizar productos y pedidos localmente usando el comando:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+php artisan sync:woocommerce
+```
 
-### Premium Partners
+Esto descarga los datos de todas las tiendas conectadas y los almacena en la base de datos local. Por defecto, la visualización en la app es en vivo desde la API.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Pruebas
 
-## Contributing
+Para ejecutar los tests de integración y funcionalidad:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan test
+```
 
-## Code of Conduct
+## Estructura y arquitectura
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Integración WooCommerce:** Toda la lógica de integración está en el backend, en servicios y controladores dedicados.
+- **Seguridad:** Las credenciales de API se almacenan en la base de datos y nunca en texto plano en el código.
+- **Frontend:** Se utiliza Blade y Tailwind para una experiencia moderna y responsiva.
+- **Logs:** Los errores de integración se registran en la base de datos para su revisión.
 
-## Security Vulnerabilities
+## Notas adicionales
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- El sistema está preparado para soportar múltiples tiendas por usuario.
+- El soporte para Shopify u otras plataformas puede agregarse fácilmente extendiendo la arquitectura de servicios.
 
-## License
+---
+
+## Uso de la IA
+- **Copilot**
+    - Se utilizó Copilot en VisualStudio Code para generar funciones genéricas. También se utilizó para la instalación de Laravel y otras dependencias,además de crear Test unitarios para las funcionalidades. Se utilizó GPT-4.1 para solicitudes sencillas y Claude Sonnet 4 para solicitudes complejas o resolución de problemas y errores que no logré visualizar rápidamente en el código. Al finalizar el proyecto utilicé nuevamente Claude 4 para refactorizar algún código y revisar si no existen funciones repetitivas o mal integradas. 
+
+Desarrollado para la prueba técnica de Amplifica.
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

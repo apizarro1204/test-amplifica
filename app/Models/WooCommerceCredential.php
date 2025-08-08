@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class WooCommerceCredential extends Model
+{
+    protected $fillable = [
+        'user_id',
+        'store_url',
+        'consumer_key',
+        'consumer_secret',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
